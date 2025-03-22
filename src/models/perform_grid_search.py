@@ -3,6 +3,7 @@ import pandas as pd
 from sklearn.svm import SVR
 from sklearn.model_selection import GridSearchCV
 import pickle
+from pathlib import Path
 
 X_train = pd.read_csv('./data/processed_data/X_train_scaled.csv')
 y_train = pd.read_csv('./data/processed_data/y_train.csv')
