@@ -25,9 +25,9 @@ def import_raw_data(local_raw_data_path, distant_folder_url):
         else:
             print(f'Error accessing the object {input_file}:', response.status_code)
 
-def main(local_raw_data_path="./data/raw", distant_folder_url="https://datascientest-mlops.s3.eu-west-1.amazonaws.com/mlops_dvc_fr/"):
+def main(local_raw_data_path="./data/raw_data", distant_folder_url="https://datascientest-mlops.s3.eu-west-1.amazonaws.com/mlops_dvc_fr/"):
     """
-    Upload data from S3 in ./data/raw
+    Upload data from S3 in ./data/raw_data
     """
     import_raw_data(local_raw_data_path, distant_folder_url)
     logger = logging.getLogger(__name__)
