@@ -12,8 +12,8 @@ import os
 @click.argument('input_filepath', type=click.Path(exists=False), required=0)
 @click.argument('output_filepath', type=click.Path(exists=False), required=0)
 def main(input_filepath, output_filepath):
-    """ Runs data processing scripts to turn raw data from (../raw) into
-        cleaned data (saved in ../preprocessed).
+    """ Runs data processing scripts to turn raw data from (../raw_data) into
+        cleaned data (saved in ../processed_data).
     """
     logger = logging.getLogger(__name__)
     logger.info('making intermediate data set from raw data')
@@ -22,7 +22,7 @@ def main(input_filepath, output_filepath):
 
     input_filepath_raw = f"{input_filepath}/raw.csv"
 
-    output_filepath = click.prompt('Enter the file path for the output preprocessed data (e.g., output/preprocessed_data.csv)', type=click.Path())
+    output_filepath = click.prompt('Enter the file path for the output preprocessed data (e.g., data/processed_data.csv)', type=click.Path())
 
     process_data(input_filepath_raw, output_filepath)
 
