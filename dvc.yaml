@@ -1,0 +1,50 @@
+stages:
+  import_data:
+    cmd: python3 src/data/import_raw_data.py
+    deps:
+    - src/data/import_raw_data.py
+    outs:
+    - data/raw_data
+  split_data:
+    cmd: python3 src/data/split_dataset.py
+    deps:
+    - data/raw_data
+    - src/data/split_dataset.py
+    outs:
+    - data/processed_data
+  normalize_data:
+    cmd: python3 src/data/normalize_dataset.py
+    deps:
+    - data/processed_data
+    - src/data/normalize_dataset.py
+    outs:
+    - data/scaled_data
+  perform_grid_search:
+    cmd: python3 src/models/perform_grid_search.py
+    deps:
+    - data/processed_data/y_train.csv
+    - data/scaled_data/X_train_scaled.csv
+    - src/models/perform_grid_search.py
+    outs:
+    - models/svr_best_params.pkl
+  train_model:
+    cmd: python3 src/models/train_model.py
+    deps:
+    - data/processed_data/y_train.csv
+    - data/scaled_data/X_train_scaled.csv
+    - models/svr_best_params.pkl
+    - src/models/train_model.py
+    outs:
+    - models/trained_svr_model.joblib
+  evaluate_model:
+    cmd: python3 src/models/evaluate_model.py
+    deps:
+    - data/processed_data/y_test.csv
+    - data/scaled_data/X_test_scaled.csv
+    - models/trained_svr_model.joblib
+    - src/models/evaluate_model.py
+    outs:
+    - data/predictions.csv
+    metrics:
+    - metrics/scores.json:
+        cache: false

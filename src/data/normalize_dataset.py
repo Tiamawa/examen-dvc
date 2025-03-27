@@ -7,7 +7,7 @@ from sklearn.model_selection import train_test_split
 from check_structure import check_existing_file, check_existing_folder
 import os
 from sklearn.preprocessing import normalize
-
+from sklearn.preprocessing import StandardScaler
 
 @click.command()
 @click.argument('input_filepath', type=click.Path(exists=False), required=0)
@@ -19,10 +19,10 @@ def main(input_filepath, output_filepath):
 
     input_filepath = click.prompt('Enter the file path for the input data', type=click.Path(exists=True))
 
-    input_train = f"{input_filepath}/X_train.csv"
-    input_test = f"{input_filepath}/X_test.csv"
+    input_train = import_dataset( f"{input_filepath}/X_train.csv")
+    input_test = import_dataset ( f"{input_filepath}/X_test.csv")
 
-    output_filepath = click.prompt('Enter the file path for the output normalized data (e.g., output/preprocessed_data.csv)', type=click.Path())
+    output_filepath = click.prompt('Enter the file path for the output normalized data (e.g., data/scaled_data)', type=click.Path())
 
     X_train_scaled = normalize_data(input_train)
     X_test_scaled = normalize_data(input_test)
@@ -34,12 +34,13 @@ def main(input_filepath, output_filepath):
     save_dataframes(X_train_scaled, X_test_scaled, output_filepath)
 
 
-
 def normalize_data(df):
     # Normalize given input data : feature-wise
-    norm_df = normalize(df, norm='L2', axis=0)
-
-    return norm_df
+    #norm_df = normalize(df, norm='L2', axis=0)
+    scaler = StandardScaler().fit(df)
+    df_scaled = scaler.transform(df)
+    df_scaled_transformed = pd.DataFrame(df_scaled, columns=df.columns)
+    return df_scaled_transformed
 
 
 def create_folder_if_necessary(output_folderpath):
@@ -47,6 +48,8 @@ def create_folder_if_necessary(output_folderpath):
     if check_existing_folder(output_folderpath):
         os.makedirs(output_folderpath)
 
+def import_dataset(file_path, **kwargs):
+    return pd.read_csv(file_path, **kwargs)
 
 def save_dataframes(X_train_scaled, X_test_scaled, output_folderpath):
     # Save dataframes to their respective output file paths

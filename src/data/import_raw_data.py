@@ -6,8 +6,8 @@ from check_structure import check_existing_file, check_existing_folder
 
 def import_raw_data(local_raw_data_path, distant_folder_url):
     """ Here we import data from distant_folder_url to local_raw_data_path"""
-    if check_existing_folder(data_path):
-        os.makedirs(data_path)
+    if check_existing_folder(local_raw_data_path):
+        os.makedirs(local_raw_data_path)
 
     # Here we are downloading the files
     input_file = os.path.join(distant_folder_url, "raw.csv")
@@ -33,7 +33,7 @@ def main(local_raw_data_path="./data/raw_data", distant_folder_url="https://data
     logger = logging.getLogger(__name__)
     logger.info("Raw dataset created")
 
-if __name__='__main__':
+if __name__=='__main__':
     log_format = '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
     logging.basicConfig(level=logging.INFO, format=log_format)
 
